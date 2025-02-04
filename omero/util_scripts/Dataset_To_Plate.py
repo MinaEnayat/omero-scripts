@@ -175,14 +175,16 @@ def run_script():
         """Convert a Dataset of Images into a Plate dynamically based on
         image coordinates. Place images in wells based on X, Y positions.""",
 
-        scripts.String("Data_Type", optional=False, values=[rstring('Dataset')], default="Dataset"),
-        scripts.List("IDs", optional=False, description="List of Dataset IDs to process.").ofType(rlong(0)),
-        scripts.String("First_Well", optional=False, default="A1", description="First well position (e.g., A1)."),
-        scripts.String("Column_Names", optional=False, default='number', description="Plate column naming."),
-        scripts.String("Row_Names", optional=False, default='letter', description="Plate row naming."),
-        scripts.String("Screen", description="Optional: Enter ID of an existing screen."),
+        scripts.String("Data_Type", optional=False, grouping="1", description="Choose source of images (only Dataset supported)", values=[rstring('Dataset')], default="Dataset"),
+        scripts.List("IDs", optional=False, grouping="2", description="List of Dataset IDs to convert to new Plates.").ofType(rlong(0)),
+        scripts.String("Filter_Names", grouping="2.1", description="Filter the images by names that contain this value"),
+        scripts.String("First_Well",  grouping="3", optional=False, default="A1", description="First well position (e.g., A1)."),
+        scripts.String("Column_Names", grouping="4", optional=False, default='number', values=row_col_naming, description="""Name plate columns with 'number' or 'letter'"""),
+        scripts.String("Row_Names", grouping="5", optional=False, default='letter', values=row_col_naming, description="""Name plate rows with 'number' or 'letter'"""),
+        scripts.String("Screen", grouping="6", description="Option: put Plate(s) in a Screen. Enter Name of new screen or ID of existing screen"""),
+        scripts.Bool("Remove_From_Dataset", grouping="7", default=True, description="Remove Images from Dataset as they are added to Plate"),
 
-         version="4.3.2",
+        version="4.3.2",
         authors=["William Moore", "OME Team"],
         institutions=["University of Dundee"],
         contact="ome-users@lists.openmicroscopy.org.uk",
